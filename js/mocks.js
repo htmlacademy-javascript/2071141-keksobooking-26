@@ -42,7 +42,7 @@ const getBooking = (index) => {
   const lng = getRandomPositiveFloat (Location.LNG_MAX, Location.LNG_MIN, Location.DIGITS);
   return {
     author : {
-      avatar : `img/avatars/user${index}.png`,
+      avatar : `img/avatars/user${String(index).padStart(2, '0')}.png`,
     },
 
     offer : {
@@ -54,9 +54,9 @@ const getBooking = (index) => {
       guests: getRandomPositiveInteger(Guests.MIN, Guests.MAX),
       checkin: getRandomArrayElement(CHECK),
       checkout: getRandomArrayElement(CHECK),
-      features: getRandomArrayElement(FEATURES), //несколько значений
+      features: FEATURES.slice(0, getRandomArrayElement(FEATURES.length)),
       description: getRandomArrayElement(DESCRIPTION),
-      photos: getRandomArrayElement(PHOTOS),
+      photos: PHOTOS.slice (0, getRandomArrayElement(PHOTOS.length)),
     },
 
     location: {
@@ -65,9 +65,5 @@ const getBooking = (index) => {
 };
 
 const getMultipleBookings = () => new Array(OFFERS).fill('').map((_, index) => getBooking(index + 1));
-
-console.log(getBooking(1));
-
-console.log(getMultipleBookings());
 
 export {getMultipleBookings};
