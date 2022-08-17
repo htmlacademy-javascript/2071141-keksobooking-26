@@ -1,5 +1,13 @@
-import './utils.js';
-import './mocks.js';
 import { getMultipleBookings } from './mocks.js';
+import {createPopup} from './popup.js';
+import {enableForm, disableForm} from './form.js';
 
-console.log(getMultipleBookings());
+const mapCanvas = document.querySelector('#map-canvas');
+
+const bookings = getMultipleBookings();
+const popup = createPopup(bookings[0]);
+
+mapCanvas.appendChild(popup);
+
+disableForm();
+enableForm();
