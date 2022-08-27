@@ -616,6 +616,10 @@ fieldset {
   text-align: center;
 }
 
+.ad-form__error-text {
+  color: red;
+}
+
 .ad-form__submit {
   font-size: 22px;
   font-weight: 700;
