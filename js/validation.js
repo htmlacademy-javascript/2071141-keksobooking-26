@@ -31,7 +31,7 @@ const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
   errorTextClass: 'ad-form__error-text',
-});
+}, true);
 
 //Заголовок
 const headlineValidation = (value) => value.length >= Headline.MIN && value.length <= Headline.MAX;
@@ -48,8 +48,10 @@ const capacityValidation = () => RoomsCapacity[+numberOfRooms.value].includes(+c
 const capacityErrorMessage = () => 'Неверное значение'; //Нужно доработать
 pristine.addValidator (capacity, capacityValidation, capacityErrorMessage);
 
-export const initValidation = () => {
+const initValidation = () => {
   adForm.addEventListener('submit', () => {
     pristine.validate();
   });
 };
+
+export {initValidation, pristine};

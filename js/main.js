@@ -1,20 +1,15 @@
-import { getMultipleBookings } from './mocks.js';
-import {createPopup} from './popup.js';
 import {enableForm, disableForm} from './form.js';
 import {initValidation} from './validation.js';
-//import {initMap, updatePins} from './map.js';
-
-const mapCanvas = document.querySelector('#map-canvas');
-
-const bookings = getMultipleBookings();
-const popup = createPopup(bookings[0]);
-
-mapCanvas.appendChild(popup);
+import {initMap, updatePins} from './map.js';
+import { getData } from './api.js';
 
 disableForm();
-enableForm();
-//initMap(enableForm);
 
-initValidation();
+initMap (() => {
+  enableForm();
+  getData((data) => {
+    updatePins(data.slice(0, 10));
+    initValidation();
+  });
+});
 
-//updatePins(bookings);
