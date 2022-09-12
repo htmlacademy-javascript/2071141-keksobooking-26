@@ -1,22 +1,8 @@
-export const getRandomPositiveInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
+const ALERT_SHOW_TIME = 5000;
 
-export const getRandomPositiveFloat = (a, b, digits = 1) => {
-  const lower = Math.min(Math.abs(a), Math.abs(b));
-  const upper = Math.max(Math.abs(a), Math.abs(b));
-  const result = Math.random() * (upper - lower) + lower;
-  return +result.toFixed(digits);
-};
+const TIMEOUT_DELAY = 500;
 
 export const isEscapeKey = (evt) => evt.key === 'Escape';
-
-export const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
-
-const ALERT_SHOW_TIME = 5000;
 
 export const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -37,4 +23,34 @@ export const showAlert = (message) => {
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
+};
+
+export const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export function throttle (callback, delayBetweenFrames) {
+  let lastTime = 0;
+
+  return (...rest) => {
+    const now = new Date();
+    if (now - lastTime >= delayBetweenFrames) {
+      callback.apply(this, rest);
+      lastTime = now;
+    }
+  };
+}
+
+export const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array;
 };

@@ -15,6 +15,7 @@ const getData = (onSuccess) => {
     })
     .then((data) => {
       onSuccess(data);
+      console.log(data);
     })
     .catch((error) =>
       showAlert (`Ошибка при получении данных ${error}`)
