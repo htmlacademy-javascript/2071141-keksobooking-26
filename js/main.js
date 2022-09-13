@@ -1,16 +1,27 @@
-import {enableForm, disableForm} from './form.js';
-import {initValidation} from './validation.js';
+import {enableForm, disableForm, setFilterChange} from './form.js';
+//import {initValidation} from './validation.js';
 import {initMap, updatePins} from './map.js';
 import { getData } from './api.js';
 import './picture-upload.js';
+import {filterOffers} from './filters.js';
+import {debounce} from './utils.js';
 
 disableForm();
 
 initMap (() => {
   enableForm();
   getData((data) => {
-    updatePins(data.slice(0, 10));
-    initValidation();
+    const renderPins = () => {
+      const filteredAds = filterOffers(data);
+      updatePins(filteredAds.slice(0, 10));
+    };
+
+    //  setResetPins(renderPins);
+    renderPins();
+    //    activateFilters();
+    setFilterChange(debounce(() => {
+      renderPins();
+    }));
   });
 });
 

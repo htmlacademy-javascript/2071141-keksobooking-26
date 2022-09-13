@@ -33,23 +33,25 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'ad-form__error-text',
 }, true);
 
-//Заголовок
+const resetValidation = () => pristine.reset();
+
 const headlineValidation = (value) => value.length >= Headline.MIN && value.length <= Headline.MAX;
 const headlineErrorMessage = () => `Введите от ${Headline.MIN} до ${Headline.MAX} символов`;
 pristine.addValidator(headlineElement, headlineValidation, headlineErrorMessage);
 
-//Стоимость за ночь
-const pricePerNightValidation = (value) => value <= MAX_PRICE && value >= MinPrice[typeOfHousing.value];
-const pricePerNightErrorMessage = () => `Введите стоимость не меньше ${MinPrice[typeOfHousing.value]} и не больше ${MAX_PRICE}`;
-pristine.addValidator(pricePerNight, pricePerNightValidation, pricePerNightErrorMessage);
+const priceValidation = (value) => value <= MAX_PRICE && value >= MinPrice[typeOfHousing.value];
+const priceErrorMessage = () => `Введите стоимость не меньше ${MinPrice[typeOfHousing.value]} и не больше ${MAX_PRICE}`;
+pristine.addValidator(pricePerNight, priceValidation, priceErrorMessage);
 
-//Количество комнат и количество мест
 const capacityValidation = () => RoomsCapacity[+numberOfRooms.value].includes(+capacity.value);
 const capacityErrorMessage = () => 'Неверное значение'; //Нужно доработать
 pristine.addValidator (capacity, capacityValidation, capacityErrorMessage);
 
+
+
 const initValidation = () => {
-  adForm.addEventListener('submit', () => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
     pristine.validate();
   });
 };

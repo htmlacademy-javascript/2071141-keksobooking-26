@@ -77,4 +77,12 @@ const setUserFormSubmit = (onSuccess) => {
   });
 };
 
-export {setUserFormSubmit, enableForm, disableForm};
+const setFilterChange = (cb) => {
+  mapFiltersElement.addEventListener('change', (evt) => {
+    if (evt.target.closest('.map__filter') || evt.target.closest('.map__features')) {
+      cb();
+    }
+  });
+};
+
+export {setUserFormSubmit, enableForm, disableForm, setFilterChange};
