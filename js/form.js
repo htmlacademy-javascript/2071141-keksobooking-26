@@ -1,7 +1,8 @@
 import {resetMap} from './map.js';
 import { sendData } from './api.js';
-import { showAlert } from './utils.js';
-import { pristine } from './validation.js';
+import { pristine, resetValidation } from './validation.js';
+import { pictureReset } from './picture-upload.js';
+
 
 const adFormElement = document.querySelector('.ad-form');
 const adFormHeaderElement = document.querySelector('.ad-form-header');
@@ -13,31 +14,38 @@ const mapFeaturesElement = document.querySelector('.map__features');
 const submitButton = document.querySelector('.ad-form__submit');
 const resetButton = document.querySelector('.ad-form__reset');
 
-const setForm = (isActive) => {
-  adFormElement.classList.toggle('ad-form--disabled', !isActive);
-  adFormHeaderElement.disabled = !isActive;
+const setForm = (condition) => {
+  adFormElement.classList.toggle('ad-form--disabled', !condition);
+  adFormHeaderElement.disabled = !condition;
   adFormFieldSetElements.forEach((item) => {
-    item.disabled = !isActive;
+    item.disabled = !condition;
   });
-  mapFiltersElement.classList.toggle('map__filters--disabled', !isActive);
+};
+
+const setFilter = (condition) => {
+  mapFiltersElement.classList.toggle('map__filters--disabled', !condition);
   mapFilterElements.forEach((item)=> {
-    item.disabled = !isActive;
+    item.disabled = !condition;
   });
-  mapFeaturesElement.disabled = !isActive;
+  mapFeaturesElement.disabled = !condition;
 };
 
 const enableForm = () => {
   setForm(true);
+  setFilter(true);
 };
 
 const disableForm = () => {
   setForm(false);
+  setFilter(false);
 };
 
 const resetForm = () => {
   adFormElement.reset();
-  mapFilterElements.reset();
+  mapFiltersElement.reset();
   resetMap();
+  resetValidation();
+  pictureReset();
 };
 
 resetButton.addEventListener('click', (evt) => {
@@ -55,7 +63,7 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
-const setUserFormSubmit = (onSuccess) => {
+const setUserFormSubmit = (onSuccess, onFail) => {
   adFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -65,10 +73,11 @@ const setUserFormSubmit = (onSuccess) => {
       sendData(
         () => {
           onSuccess();
+          resetForm();
           unblockSubmitButton();
         },
         () => {
-          showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+          onFail();
           unblockSubmitButton();
         },
         new FormData(evt.target),
@@ -85,4 +94,4 @@ const setFilterChange = (cb) => {
   });
 };
 
-export {setUserFormSubmit, enableForm, disableForm, setFilterChange};
+export {setUserFormSubmit, enableForm, disableForm, setFilterChange, resetForm};

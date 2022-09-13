@@ -1,4 +1,4 @@
-import {showAlert} from './utils.js';
+import {showAlert} from './messages.js';
 
 const Address = {
   GET: 'https://26.javascript.pages.academy/keksobooking/data',
@@ -15,7 +15,6 @@ const getData = (onSuccess) => {
     })
     .then((data) => {
       onSuccess(data);
-      console.log(data);
     })
     .catch((error) =>
       showAlert (`Ошибка при получении данных ${error}`)

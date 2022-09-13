@@ -13,7 +13,7 @@ const AD_MARKER_SIZE = 40;
 
 const addressElement = document.querySelector('#address');
 
-let map, markerGroup;
+let map, markerGroup, mainMarker;
 
 const initMap = (cb) => {
   map = L.map('map-canvas')
@@ -33,7 +33,7 @@ const initMap = (cb) => {
     iconAnchor: [MAIN_MARKER_SIZE / 2, MAIN_MARKER_SIZE],
   });
 
-  const mainMarker = L.marker(
+  mainMarker = L.marker(
     Coordinates,
     {
       draggable: true,
@@ -82,7 +82,7 @@ const updatePins = (ads) => {
 
 const resetMap = () => {
   map.setView (Coordinates, ZOOM);
-//  mainMarker.setLatLng(Coordinates);
+  mainMarker.setLatLng(Coordinates);
 };
 
 export {initMap, updatePins, resetMap};

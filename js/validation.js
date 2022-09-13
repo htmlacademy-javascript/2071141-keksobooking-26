@@ -26,8 +26,10 @@ const pricePerNight = adForm.querySelector('#price');
 const typeOfHousing = adForm.querySelector('#type');
 const numberOfRooms = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
 
-const pristine = new Pristine(adForm, {
+const pristine = new Pristine (adForm, {
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
   errorTextClass: 'ad-form__error-text',
@@ -47,6 +49,13 @@ const capacityValidation = () => RoomsCapacity[+numberOfRooms.value].includes(+c
 const capacityErrorMessage = () => 'Неверное значение'; //Нужно доработать
 pristine.addValidator (capacity, capacityValidation, capacityErrorMessage);
 
+timeIn.addEventListener('change', () => {
+  timeOut.value = timeIn.value;
+});
+
+timeOut.addEventListener('change', () => {
+  timeIn.value = timeOut.value;
+});
 
 
 const initValidation = () => {
@@ -56,4 +65,5 @@ const initValidation = () => {
   });
 };
 
-export {initValidation, pristine};
+
+export {initValidation, resetValidation ,pristine};
