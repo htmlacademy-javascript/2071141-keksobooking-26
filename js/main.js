@@ -1,17 +1,31 @@
-import { getMultipleBookings } from './mocks.js';
-import {createPopup} from './popup.js';
-import {enableForm, disableForm} from './form.js';
+import {enableForm, disableForm, setFilterChange} from './form.js';
 import {initValidation} from './validation.js';
-// import './validation.js';
+import {initMap, updatePins} from './map.js';
+import { getData } from './api.js';
+import './picture-upload.js';
+import {filterOffers} from './filters.js';
+import {debounce} from './utils.js';
+import {setUserFormSubmit} from './form.js';
+import {showSuccessMessage, showErrorMessage} from './messages.js';
 
-const mapCanvas = document.querySelector('#map-canvas');
-
-const bookings = getMultipleBookings();
-const popup = createPopup(bookings[0]);
-
-mapCanvas.appendChild(popup);
+const MAX_PINS = 10;
 
 disableForm();
-enableForm();
-
 initValidation();
+
+initMap (() => {
+  enableForm();
+  setUserFormSubmit(showSuccessMessage, showErrorMessage);
+  getData((data) => {
+    const renderPins = () => {
+      const filteredAds = filterOffers(data);
+      updatePins(filteredAds.slice(0, MAX_PINS));
+    };
+
+    renderPins();
+    setFilterChange(debounce(() => {
+      renderPins();
+    }));
+  });
+});
+
