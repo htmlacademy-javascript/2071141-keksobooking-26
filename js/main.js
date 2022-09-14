@@ -8,6 +8,8 @@ import {debounce} from './utils.js';
 import {setUserFormSubmit} from './form.js';
 import {showSuccessMessage, showErrorMessage} from './messages.js';
 
+const MAX_PINS = 10;
+
 disableForm();
 initValidation();
 
@@ -17,12 +19,10 @@ initMap (() => {
   getData((data) => {
     const renderPins = () => {
       const filteredAds = filterOffers(data);
-      updatePins(filteredAds.slice(0, 10));
+      updatePins(filteredAds.slice(0, MAX_PINS));
     };
 
-    //  setResetPins(renderPins);
     renderPins();
-    //    activateFilters();
     setFilterChange(debounce(() => {
       renderPins();
     }));
