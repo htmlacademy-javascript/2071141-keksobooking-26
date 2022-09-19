@@ -3,7 +3,7 @@ import { sendData } from './api.js';
 import { resetValidation, checkFormValidation } from './validation.js';
 import {resetSlider, setSliderState } from './slider.js';
 import { pictureReset } from './picture-upload.js';
-
+import {showSuccessMessage, showErrorMessage} from './messages.js';
 
 const adFormElement = document.querySelector('.ad-form');
 const adFormHeaderElement = document.querySelector('.ad-form-header');
@@ -67,7 +67,7 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
-const setUserFormSubmit = (onSuccess, onFail) => {
+const setUserFormSubmit = () => {
   adFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -76,12 +76,12 @@ const setUserFormSubmit = (onSuccess, onFail) => {
       blockSubmitButton();
       sendData(
         () => {
-          onSuccess();
+          showSuccessMessage();
           resetForm();
           unblockSubmitButton();
         },
         () => {
-          onFail();
+          showErrorMessage();
           unblockSubmitButton();
         },
         new FormData(evt.target),

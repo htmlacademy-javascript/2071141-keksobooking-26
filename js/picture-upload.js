@@ -14,6 +14,12 @@ const addPhoto = (photoUpload, preview) => {
   }
 };
 
+export const pictureReset = () => {
+  userPhotoPreview.style.padding = userPhotoPick.style.padding;
+  userPhotoPreview.innerHTML = '';
+  adPhotoPreview.innerHTML = '';
+};
+
 userPhotoPick.addEventListener('change', () => {
   addPhoto (userPhotoPick, userPhotoPreview);
 });
@@ -25,8 +31,4 @@ adPhotoPick.addEventListener('change', ()=> {
   adPhotoPreview.appendChild(photoPreview);
 });
 
-export const pictureReset = () => {
-  userPhotoPreview.style.padding = userPhotoPick.style.padding;
-  userPhotoPreview.innerHTML = '';
-  adPhotoPreview.innerHTML = '';
-};
+

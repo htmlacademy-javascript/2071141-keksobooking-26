@@ -7,29 +7,25 @@ import { initSlider } from './slider.js';
 import {getFilterOffers} from './filters.js';
 import {debounce} from './utils.js';
 import {setUserFormSubmit} from './form.js';
-import {showSuccessMessage, showErrorMessage} from './messages.js';
 
 const MAX_PINS = 10;
 
 disableForm();
 
+const renderPins = (data) => {
+  const filteredAds = getFilterOffers(data);
+  updatePins(filteredAds.slice(0, MAX_PINS));
+};
 
 initBooking (() => {
   enableForm();
   initValidation();
   initSlider();
-  setUserFormSubmit(
-    showSuccessMessage, showErrorMessage
-  );
+  setUserFormSubmit();
   getData((data) => {
-    const renderPins = () => {
-      const filteredAds = getFilterOffers(data);
-      updatePins(filteredAds.slice(0, MAX_PINS));
-    };
-
     renderPins();
     setFilterChange(debounce(() => {
-      renderPins();
+      renderPins(data);
     }));
   });
 });
