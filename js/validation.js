@@ -35,19 +35,19 @@ const pristine = new Pristine (adForm, {
   errorTextClass: 'ad-form__error-text',
 }, true);
 
-const resetValidation = () => pristine.reset();
+export const resetValidation = () => pristine.reset();
 
-const headlineValidation = (value) => value.length >= Headline.MIN && value.length <= Headline.MAX;
-const headlineErrorMessage = () => `Введите от ${Headline.MIN} до ${Headline.MAX} символов`;
-pristine.addValidator(headlineElement, headlineValidation, headlineErrorMessage);
+const validateHeadline = (value) => value.length >= Headline.MIN && value.length <= Headline.MAX;
+const validateHeadlineErrorMessage = () => `Введите от ${Headline.MIN} до ${Headline.MAX} символов`;
+pristine.addValidator(headlineElement, validateHeadline, validateHeadlineErrorMessage);
 
-const priceValidation = (value) => value <= MAX_PRICE && value >= MinPrice[typeOfHousing.value];
-const priceErrorMessage = () => `Введите стоимость не меньше ${MinPrice[typeOfHousing.value]} и не больше ${MAX_PRICE}`;
-pristine.addValidator(pricePerNight, priceValidation, priceErrorMessage);
+const validatePrice = (value) => value <= MAX_PRICE && value >= MinPrice[typeOfHousing.value];
+const validatePriceErrorMessage = () => `Введите стоимость не меньше ${MinPrice[typeOfHousing.value]} и не больше ${MAX_PRICE}`;
+pristine.addValidator(pricePerNight, validatePrice, validatePriceErrorMessage);
 
-const capacityValidation = () => RoomsCapacity[+numberOfRooms.value].includes(+capacity.value);
-const capacityErrorMessage = () => 'Неверное значение'; //Нужно доработать
-pristine.addValidator (capacity, capacityValidation, capacityErrorMessage);
+const validateCapacity = () => RoomsCapacity[+numberOfRooms.value].includes(+capacity.value);
+const validateCapacityErrorMessage = () => 'Неверное значение'; //Нужно доработать
+pristine.addValidator (capacity, validateCapacity, validateCapacityErrorMessage);
 
 timeIn.addEventListener('change', () => {
   timeOut.value = timeIn.value;
@@ -57,13 +57,16 @@ timeOut.addEventListener('change', () => {
   timeIn.value = timeOut.value;
 });
 
+export const validateElement = (element) => {
+  pristine.validate(element);
+};
 
-const initValidation = () => {
+export const checkFormValidation = () => pristine.validate();
+
+
+export const initValidation = () => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     pristine.validate();
   });
 };
-
-
-export {initValidation, resetValidation ,pristine};

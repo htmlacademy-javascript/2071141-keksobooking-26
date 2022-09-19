@@ -1,7 +1,9 @@
 import {resetMap} from './map.js';
 import { sendData } from './api.js';
-import { pristine, resetValidation } from './validation.js';
+import { resetValidation, checkFormValidation } from './validation.js';
+import {resetSlider, setSliderState } from './slider.js';
 import { pictureReset } from './picture-upload.js';
+import {showSuccessMessage, showErrorMessage} from './messages.js';
 
 
 const adFormElement = document.querySelector('.ad-form');
@@ -20,6 +22,8 @@ const setForm = (condition) => {
   adFormFieldSetElements.forEach((item) => {
     item.disabled = !condition;
   });
+  setSliderState(condition);
+
 };
 
 const setFilter = (condition) => {
@@ -45,6 +49,7 @@ const resetForm = () => {
   mapFiltersElement.reset();
   resetMap();
   resetValidation();
+  resetSlider();
   pictureReset();
 };
 
@@ -63,21 +68,21 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Сохранить';
 };
 
-const setUserFormSubmit = (onSuccess, onFail) => {
+const setUserFormSubmit = () => {
   adFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
-    const isValid = pristine.validate();
+    const isValid = checkFormValidation;
     if (isValid) {
       blockSubmitButton();
       sendData(
         () => {
-          onSuccess();
+          showSuccessMessage();
           resetForm();
           unblockSubmitButton();
         },
         () => {
-          onFail();
+          showErrorMessage();
           unblockSubmitButton();
         },
         new FormData(evt.target),

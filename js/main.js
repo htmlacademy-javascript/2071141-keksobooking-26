@@ -3,29 +3,30 @@ import {initValidation} from './validation.js';
 import {initMap, updatePins} from './map.js';
 import { getData } from './api.js';
 import './picture-upload.js';
-import {filterOffers} from './filters.js';
+import {initSlider} from './slider.js';
+import {getFilterOffers} from './filters.js';
 import {debounce} from './utils.js';
 import {setUserFormSubmit} from './form.js';
-import {showSuccessMessage, showErrorMessage} from './messages.js';
+
 
 const MAX_PINS = 10;
 
 disableForm();
-initValidation();
+
+const renderPins = (data) => {
+  const filteredAds = getFilterOffers(data);
+  updatePins(filteredAds.slice(0, MAX_PINS));
+};
 
 initMap (() => {
   enableForm();
-  setUserFormSubmit(showSuccessMessage, showErrorMessage);
+  initValidation();
+  initSlider();
+  setUserFormSubmit();
   getData((data) => {
-    const renderPins = () => {
-      const filteredAds = filterOffers(data);
-      updatePins(filteredAds.slice(0, MAX_PINS));
-    };
-
-    renderPins();
+    renderPins(data);
     setFilterChange(debounce(() => {
-      renderPins();
+      renderPins(data);
     }));
   });
 });
-

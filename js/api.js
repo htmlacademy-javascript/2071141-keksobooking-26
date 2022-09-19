@@ -5,7 +5,7 @@ const Address = {
   SEND: 'https://26.javascript.pages.academy/keksobooking',
 };
 
-const getData = (onSuccess) => {
+export const getData = (onSuccess) => {
   fetch(Address.GET)
     .then((response) => {
       if (response.ok) {
@@ -21,7 +21,7 @@ const getData = (onSuccess) => {
     );
 };
 
-const sendData = (onSuccess, onError, body) =>
+export const sendData = (onSuccess, onError, body) =>
 {
   fetch(Address.SEND,
     {
@@ -36,9 +36,5 @@ const sendData = (onSuccess, onError, body) =>
         onError();
       }
     })
-    .catch(
-      () => onError()
-    );
+    .catch(onError);
 };
-
-export {getData, sendData};
