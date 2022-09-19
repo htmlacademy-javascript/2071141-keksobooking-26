@@ -3,6 +3,7 @@ import {initValidation} from './validation.js';
 import {initMap, updatePins} from './map.js';
 import { getData } from './api.js';
 import './picture-upload.js';
+import './slider.js';
 import {filterOffers} from './filters.js';
 import {debounce} from './utils.js';
 import {setUserFormSubmit} from './form.js';

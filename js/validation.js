@@ -35,7 +35,7 @@ const pristine = new Pristine (adForm, {
   errorTextClass: 'ad-form__error-text',
 }, true);
 
-const resetValidation = () => pristine.reset();
+export const resetValidation = () => pristine.reset();
 
 const headlineValidation = (value) => value.length >= Headline.MIN && value.length <= Headline.MAX;
 const headlineErrorMessage = () => `Введите от ${Headline.MIN} до ${Headline.MAX} символов`;
@@ -57,13 +57,16 @@ timeOut.addEventListener('change', () => {
   timeIn.value = timeOut.value;
 });
 
+export const validateElement = (element) => {
+  pristine.validate(element);
+};
 
-const initValidation = () => {
+export const checkFormValidation = () => pristine.validate();
+
+
+export const initValidation = () => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     pristine.validate();
   });
 };
-
-
-export {initValidation, resetValidation ,pristine};

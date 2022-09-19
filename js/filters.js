@@ -1,3 +1,6 @@
+const DEFAULT_VALUE = 'any';
+const MAX_ADS = 10;
+
 const Price = {
   'low' : {
     MIN: 0,
@@ -18,7 +21,7 @@ const typeFilterElement = filtersContainer.querySelector('#housing-type');
 const priceFilterElement = filtersContainer.querySelector('#housing-price');
 const roomsFilterElement = filtersContainer.querySelector('#housing-rooms');
 const guestsFilterElement = filtersContainer.querySelector('#housing-guests');
-const housingFeaturesElement = filtersContainer.querySelector('#housing-features');
+const housingFeaturesElement = filtersContainer.querySelectorAll('input[name="features"]');
 
 const compareAds = (adA, adB) => {
   const rankA = adA.offer.features ? adA.offer.features.length : 0;
@@ -27,10 +30,10 @@ const compareAds = (adA, adB) => {
   return rankB - rankA;
 };
 
-const checkType = (ad) => typeFilterElement.value ==='any' || ad.offer.type === typeFilterElement.value;
+const checkType = (ad) => typeFilterElement.value ===DEFAULT_VALUE || ad.offer.type === typeFilterElement.value;
 
 const checkPrice = (ad) => {
-  if (priceFilterElement.value === 'any') {
+  if (priceFilterElement.value === DEFAULT_VALUE) {
     return true;
   }
 
@@ -41,8 +44,8 @@ const checkPrice = (ad) => {
   const currentPriceFilter = Price[priceFilterElement.value];
   return ad.offer.price >= currentPriceFilter.MIN && ad.offer.price <= currentPriceFilter.MAX;
 };
-const checkRooms = (ad) => roomsFilterElement.value === 'any' || ad.offer.rooms === parseInt(roomsFilterElement.value, 10);
-const checkGuests = (ad) => guestsFilterElement.value === 'any' || ad.offer.guests === parseInt(guestsFilterElement.value, 10);
+const checkRooms = (ad) => roomsFilterElement.value === DEFAULT_VALUE || ad.offer.rooms === parseInt(roomsFilterElement.value, MAX_ADS);
+const checkGuests = (ad) => guestsFilterElement.value === DEFAULT_VALUE || ad.offer.guests === parseInt(guestsFilterElement.value, MAX_ADS);
 const checkFeatures = (ad, activeFeatureFilters) => {
   if (!activeFeatureFilters.length) {
     return true;
@@ -59,6 +62,7 @@ export const filterOffers = (ads) => {
   const activeFeatureFilters = Array.from(housingFeaturesElement)
     .filter((feature) => feature.checked)
     .map((feature) => feature.value);
+  ads.slice(0, MAX_ADS);
   const result = ads
     .filter((ad) => checkType(ad)
       && checkPrice(ad)

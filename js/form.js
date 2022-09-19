@@ -1,6 +1,7 @@
 import {resetMap} from './map.js';
 import { sendData } from './api.js';
-import { pristine, resetValidation } from './validation.js';
+import { resetValidation, checkFormValidation } from './validation.js';
+import {resetSlider } from './slider.js';
 import { pictureReset } from './picture-upload.js';
 
 
@@ -45,6 +46,7 @@ const resetForm = () => {
   mapFiltersElement.reset();
   resetMap();
   resetValidation();
+  resetSlider();
   pictureReset();
 };
 
@@ -67,7 +69,7 @@ const setUserFormSubmit = (onSuccess, onFail) => {
   adFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
-    const isValid = pristine.validate();
+    const isValid = checkFormValidation;
     if (isValid) {
       blockSubmitButton();
       sendData(
