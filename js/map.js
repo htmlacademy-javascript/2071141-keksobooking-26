@@ -15,7 +15,7 @@ const addressElement = document.querySelector('#address');
 
 let map, markerGroup, mainMarker;
 
-const initMap = (cb) => {
+const initBooking = (cb) => {
   map = L.map('map-canvas')
     .on('load', cb)
     .setView(Coordinates, ZOOM);
@@ -85,4 +85,4 @@ const resetMap = () => {
   mainMarker.setLatLng(Coordinates);
 };
 
-export {initMap, updatePins, resetMap};
+export {initBooking, updatePins, resetMap};

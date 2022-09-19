@@ -1,7 +1,7 @@
 import {resetMap} from './map.js';
 import { sendData } from './api.js';
 import { resetValidation, checkFormValidation } from './validation.js';
-import {resetSlider } from './slider.js';
+import {resetSlider, setSliderState } from './slider.js';
 import { pictureReset } from './picture-upload.js';
 
 
@@ -21,6 +21,8 @@ const setForm = (condition) => {
   adFormFieldSetElements.forEach((item) => {
     item.disabled = !condition;
   });
+  setSliderState(condition);
+
 };
 
 const setFilter = (condition) => {
