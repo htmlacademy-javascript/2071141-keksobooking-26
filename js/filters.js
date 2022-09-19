@@ -27,8 +27,6 @@ const guestsFilterElement = filtersContainer.querySelector('#housing-guests');
 
 const selectFeaturesCheckbox = () => Array.from(document.querySelectorAll('input[name="features"]:checked')).map((cb) => cb.value);
 
-console.log(selectFeaturesCheckbox());
-
 const checkType = (ad) => typeFilterElement.value ===DEFAULT_VALUE || ad.offer.type === typeFilterElement.value;
 const checkPrice = (ad) => {
   if (priceFilterElement.value === DEFAULT_VALUE) {
@@ -55,8 +53,6 @@ const checkFeatures = (ad) => {
   }
   return false;
 };
-
-console.log(checkFeatures());
 
 export const getFilterOffers = (ads) => {
   const type = checkType.value;
