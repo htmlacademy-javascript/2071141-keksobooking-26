@@ -1,6 +1,7 @@
 const DEFAULT_VALUE = 'any';
 const MAX_ADS = 10;
-const AdsPrice = {
+
+const Price = {
   'low' : {
     MIN: 0,
     MAX: 10000,
@@ -13,10 +14,6 @@ const AdsPrice = {
     MIN: 50000,
     MAX: 1000000
   },
-  'any' : {
-    MIN: 0,
-    MAX: 1000000,
-  }
 };
 
 const filtersContainer = document.querySelector('.map__filters');
@@ -24,41 +21,55 @@ const typeFilterElement = filtersContainer.querySelector('#housing-type');
 const priceFilterElement = filtersContainer.querySelector('#housing-price');
 const roomsFilterElement = filtersContainer.querySelector('#housing-rooms');
 const guestsFilterElement = filtersContainer.querySelector('#housing-guests');
+const housingFeaturesElement = filtersContainer.querySelectorAll('input[name="features"]');
 
-const selectFeaturesCheckbox = () => Array.from(document.querySelectorAll('input[name="features"]:checked')).map((cb) => cb.value);
+const compareAds = (adA, adB) => {
+  const rankA = adA.offer.features ? adA.offer.features.length : 0;
+  const rankB = adB.offer.features ? adB.offer.features.length : 0;
+
+  return rankB - rankA;
+};
 
 const checkType = (ad) => typeFilterElement.value ===DEFAULT_VALUE || ad.offer.type === typeFilterElement.value;
+
 const checkPrice = (ad) => {
   if (priceFilterElement.value === DEFAULT_VALUE) {
     return true;
   }
-  if (!(priceFilterElement.value in AdsPrice)) {
+
+  if (!(priceFilterElement.value in Price)) {
     return true;
   }
-  const currentPriceFilter = AdsPrice[priceFilterElement.value];
+
+  const currentPriceFilter = Price[priceFilterElement.value];
   return ad.offer.price >= currentPriceFilter.MIN && ad.offer.price <= currentPriceFilter.MAX;
 };
-const checkRooms = (ad) =>
-  roomsFilterElement.value === DEFAULT_VALUE || ad.offer.rooms === parseInt(roomsFilterElement.value, MAX_ADS);
-const checkGuests = (ad) =>
-  guestsFilterElement.value === DEFAULT_VALUE || ad.offer.guests === parseInt(guestsFilterElement.value, MAX_ADS);
-const checkFeatures = (ad) => {
-  const adFeatures = ad.offer.features;
-  const selectFeatures = selectFeaturesCheckbox();
-  if (selectFeatures.length === 0) {
+const checkRooms = (ad) => roomsFilterElement.value === DEFAULT_VALUE || ad.offer.rooms === parseInt(roomsFilterElement.value, MAX_ADS);
+const checkGuests = (ad) => guestsFilterElement.value === DEFAULT_VALUE || ad.offer.guests === parseInt(guestsFilterElement.value, MAX_ADS);
+const checkFeatures = (ad, activeFeatureFilters) => {
+  if (!activeFeatureFilters.length) {
     return true;
   }
-  if (adFeatures){
-    return selectFeatures.every((feature) => adFeatures.includes(feature));
+
+  if (!ad.offer.features || !ad.offer.features.length) {
+    return false;
   }
-  return false;
+
+  return activeFeatureFilters.every((featureFilter) => ad.offer.features.includes(featureFilter));
 };
 
 export const getFilterOffers = (ads) => {
-  const type = checkType.value;
-  const price = checkPrice.value;
-  const rooms = checkRooms.value;
-  const guests = checkGuests.value;
+  const activeFeatureFilters = Array.from(housingFeaturesElement)
+    .filter((feature) => feature.checked)
+    .map((feature) => feature.value);
+  ads.slice(0, MAX_ADS);
+  const result = ads
+    .filter((ad) => checkType(ad)
+      && checkPrice(ad)
+      && checkRooms(ad)
+      && checkGuests(ad)
+      && checkFeatures(ad, activeFeatureFilters)
+    );
 
-  return checkType(ads, type) && checkPrice(ads, price) && checkRooms(ads, rooms) && checkGuests(ads, guests) && checkFeatures(ads);
+  return result.sort(compareAds);
 };

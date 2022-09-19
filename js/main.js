@@ -1,12 +1,13 @@
 import {enableForm, disableForm, setFilterChange} from './form.js';
 import {initValidation} from './validation.js';
-import {initBooking, updatePins} from './map.js';
+import {initMap, updatePins} from './map.js';
 import { getData } from './api.js';
 import './picture-upload.js';
-import { initSlider } from './slider.js';
+import {initSlider} from './slider.js';
 import {getFilterOffers} from './filters.js';
 import {debounce} from './utils.js';
 import {setUserFormSubmit} from './form.js';
+
 
 const MAX_PINS = 10;
 
@@ -17,16 +18,15 @@ const renderPins = (data) => {
   updatePins(filteredAds.slice(0, MAX_PINS));
 };
 
-initBooking (() => {
+initMap (() => {
   enableForm();
   initValidation();
   initSlider();
   setUserFormSubmit();
   getData((data) => {
-    renderPins();
+    renderPins(data);
     setFilterChange(debounce(() => {
       renderPins(data);
     }));
   });
 });
-

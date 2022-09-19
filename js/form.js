@@ -5,6 +5,7 @@ import {resetSlider, setSliderState } from './slider.js';
 import { pictureReset } from './picture-upload.js';
 import {showSuccessMessage, showErrorMessage} from './messages.js';
 
+
 const adFormElement = document.querySelector('.ad-form');
 const adFormHeaderElement = document.querySelector('.ad-form-header');
 const adFormFieldSetElements = document.querySelectorAll('.ad-form__element');

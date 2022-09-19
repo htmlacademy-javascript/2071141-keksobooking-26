@@ -37,17 +37,17 @@ const pristine = new Pristine (adForm, {
 
 export const resetValidation = () => pristine.reset();
 
-const headlineValidation = (value) => value.length >= Headline.MIN && value.length <= Headline.MAX;
-const headlineErrorMessage = () => `Введите от ${Headline.MIN} до ${Headline.MAX} символов`;
-pristine.addValidator(headlineElement, headlineValidation, headlineErrorMessage);
+const validateHeadline = (value) => value.length >= Headline.MIN && value.length <= Headline.MAX;
+const validateHeadlineErrorMessage = () => `Введите от ${Headline.MIN} до ${Headline.MAX} символов`;
+pristine.addValidator(headlineElement, validateHeadline, validateHeadlineErrorMessage);
 
-const priceValidation = (value) => value <= MAX_PRICE && value >= MinPrice[typeOfHousing.value];
-const priceErrorMessage = () => `Введите стоимость не меньше ${MinPrice[typeOfHousing.value]} и не больше ${MAX_PRICE}`;
-pristine.addValidator(pricePerNight, priceValidation, priceErrorMessage);
+const validatePrice = (value) => value <= MAX_PRICE && value >= MinPrice[typeOfHousing.value];
+const validatePriceErrorMessage = () => `Введите стоимость не меньше ${MinPrice[typeOfHousing.value]} и не больше ${MAX_PRICE}`;
+pristine.addValidator(pricePerNight, validatePrice, validatePriceErrorMessage);
 
-const capacityValidation = () => RoomsCapacity[+numberOfRooms.value].includes(+capacity.value);
-const capacityErrorMessage = () => 'Неверное значение'; //Нужно доработать
-pristine.addValidator (capacity, capacityValidation, capacityErrorMessage);
+const validateCapacity = () => RoomsCapacity[+numberOfRooms.value].includes(+capacity.value);
+const validateCapacityErrorMessage = () => 'Неверное значение'; //Нужно доработать
+pristine.addValidator (capacity, validateCapacity, validateCapacityErrorMessage);
 
 timeIn.addEventListener('change', () => {
   timeOut.value = timeIn.value;
